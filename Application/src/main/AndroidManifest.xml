@@ -27,7 +27,7 @@
         android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
         android:theme="@style/MaterialTheme">
-<!-- ajout portrait -->
+<!-- ajoutportrait -->
         <activity android:name=".CameraActivity"
                   android:label="@string/app_name"
             android:screenOrientation="portrait">
