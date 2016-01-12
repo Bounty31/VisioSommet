@@ -31,7 +31,7 @@ public class CameraActivity extends Activity {
                     .commit();
         }
 
-        // MDR
+        // MDR etrtr
     }
 
 }
