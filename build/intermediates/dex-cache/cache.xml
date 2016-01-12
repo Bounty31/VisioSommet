@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ddde541c289c8b816a8f8fd6c325d80788c522a6">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/pre-dexed/debug/classes-c0a3b323c038a2eb2c74a32620b7e10777930709.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/exploded-aar/com.android.support/support-v13/23.1.0/jars/libs/internal_impl-23.1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="076c7d9e22cc325b8008ff799e0c06dfb8eefdf3">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/pre-dexed/debug/internal_impl-23.1.0-63572532f17addcbd41b21f19c5f663279853ac6.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/pre-dexed/debug/classes-71232134a2b778b0c1f2bd748f660df194baa4af.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/pre-dexed/debug/classes-4b45b7b535f7188c8db9adba71c1c43631480db0.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ddde541c289c8b816a8f8fd6c325d80788c522a6">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/pre-dexed/debug/classes-e8fa2210973818c23d5223e7e895ac5e975a306a.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/support-v13/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="1a57337a520bf40b9ad1e074cb780527dffa1aac">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/pre-dexed/debug/classes-5e97abacf803ca29953dca117c462fdc96720477.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/support-v13/23.1.0/jars/libs/internal_impl-23.1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="076c7d9e22cc325b8008ff799e0c06dfb8eefdf3">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/pre-dexed/debug/internal_impl-23.1.0-da8a31843e588d7b57c74de2e677d03c446930db.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/pre-dexed/debug/classes-fdbd74f4759768f89c9908e3a3f9da4dccaea8a2.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/libs/internal_impl-23.1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8716243bf04bae8d6c9ca94d27b9a9be7236f0a3">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/pre-dexed/debug/internal_impl-23.1.0-d93a3bfc275e3beefb093503c2a6768c8b79f5d3.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/pre-dexed/debug/classes-0142935f31515080845685adb3dd14d2728eb5d8.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/exploded-aar/com.android.support/support-v13/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="1a57337a520bf40b9ad1e074cb780527dffa1aac">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/pre-dexed/debug/classes-a88527357edb44f8ae3fb55e27317604f237b785.jar" />
+    </item>
+    <item
+        jar="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/libs/internal_impl-23.1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8716243bf04bae8d6c9ca94d27b9a9be7236f0a3">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/VisioSommet/Application/build/intermediates/pre-dexed/debug/internal_impl-23.1.0-45324690451c9462dbe0852a96b0d9d04d554a8e.jar" />
+    </item>
+    <item
+        jar="/tmp/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/23.1.0/support-annotations-23.1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="92e3fc113ec3ee36b64603a38857b95700025633">
+        <dex dex="/home/ozeroual/AndroidStudioProjects/Projet_Couchot/git/Camera2Basic/Application/build/intermediates/pre-dexed/debug/support-annotations-23.1.0-da0b8ec107ea7f449facfc001214c76bb04d5605.jar" />
+    </item>
+
+</items>
