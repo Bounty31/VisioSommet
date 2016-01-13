@@ -48,6 +48,8 @@ public class CameraActivity extends Activity implements LocationListener {
         latitude = 47.642787;
         longitude = 6.8397398;
         locationToBear = new Location("Current");
+        locationToBear.setLongitude(6.84486678904718);
+        locationToBear.setLatitude(47.224908948974);
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, Camera2BasicFragment.newInstance())
@@ -91,7 +93,7 @@ public class CameraActivity extends Activity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("Localisation", location.getLatitude() + "," + location.getLongitude());
+        Log.d("Localisation", location.bearingTo(locationToBear)+"");
         latitude = location.getLatitude();
         longitude = location.getLongitude();
     }
