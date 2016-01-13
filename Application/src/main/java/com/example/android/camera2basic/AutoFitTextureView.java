@@ -19,6 +19,10 @@ package com.example.android.camera2basic;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.TextureView;
+import android.widget.AbsoluteLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 /**
  * A {@link TextureView} that can be adjusted to a specified aspect ratio.
@@ -64,10 +68,9 @@ public class AutoFitTextureView extends TextureView {
 
         int height = MeasureSpec.getSize(heightMeasureSpec);
         if (mRatioWidth > 0 && mRatioHeight > 0)
-            setMeasuredDimension(width, height * mRatioWidth / mRatioHeight);
+            setMeasuredDimension(width, height);
         else
-            setMeasuredDimension(width, height*4/3);
+            setMeasuredDimension(width, height);
 
     }
-
 }

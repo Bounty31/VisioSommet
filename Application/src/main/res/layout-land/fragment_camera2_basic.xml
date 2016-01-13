@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -21,6 +21,14 @@
         android:id="@+id/texture"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+
+    <ImageView
+        android:layout_width="262dp"
+        android:layout_height="183dp"
+        android:layout_x="276dp"
+        android:layout_y="47dp"
+        android:src="@drawable/abc_btn_rating_star_on_mtrl_alpha"
+        android:id="@+id/imageView"></ImageView>
 
     <!--<FrameLayout-->
         <!--android:id="@+id/control"-->
@@ -53,4 +61,4 @@
 
     <!--</FrameLayout>-->
 
-</LinearLayout>
+</AbsoluteLayout>

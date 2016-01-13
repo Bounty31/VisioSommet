@@ -22,7 +22,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+       // setContentView(R.layout.activity_main);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mOrientation = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
@@ -52,11 +52,11 @@ public class SensorActivity extends Activity implements SensorEventListener {
         float pitch_angle = event.values[1];
         float roll_angle = event.values[2];
 
-        TextView tv_azi = (TextView) findViewById(R.id.Azimuth);
-        TextView tv_pitch = (TextView) findViewById(R.id.Pitch);
-        TextView tv_angle = (TextView) findViewById(R.id.Angle);
-        tv_azi.setText(azimuth_angle+"");
-        tv_pitch.setText(pitch_angle+"");
-        tv_angle.setText(roll_angle+"");
+       // TextView tv_azi = (TextView) findViewById(R.id.Azimuth);
+       // TextView tv_pitch = (TextView) findViewById(R.id.Pitch);
+       // TextView tv_angle = (TextView) findViewById(R.id.Angle);
+       // tv_azi.setText(azimuth_angle+"");
+      //  tv_pitch.setText(pitch_angle+"");
+       // tv_angle.setText(roll_angle+"");
     }
 }

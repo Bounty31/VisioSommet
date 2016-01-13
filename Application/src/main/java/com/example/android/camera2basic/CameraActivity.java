@@ -18,16 +18,34 @@ package com.example.android.camera2basic;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.AbsoluteLayout;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 public class CameraActivity extends Activity implements LocationListener {
 
@@ -35,11 +53,13 @@ public class CameraActivity extends Activity implements LocationListener {
     private double latitude = -1;
     private double longitude = -1;
     private Location locationToBear = null;
+    ImageView image;
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
+    OrientationPrecise mOrientationPrecise = null;
+    BroadcastReceiver br_orientation = null;
+    String orientation ="";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +75,8 @@ public class CameraActivity extends Activity implements LocationListener {
                     .replace(R.id.container, Camera2BasicFragment.newInstance())
                     .commit();
         }
+
+
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
@@ -89,6 +111,21 @@ public class CameraActivity extends Activity implements LocationListener {
                     LocationManager.NETWORK_PROVIDER, 100, 0, locationListener);
 
         }
+
+        mOrientationPrecise = OrientationPrecise.getOrientationPrecise(this);
+
+        br_orientation =   new BroadcastReceiver() {
+            String pattern = "##.##";
+            DecimalFormat decimalFormat = new DecimalFormat(pattern);
+
+            public void onReceive(Context context, Intent intent) {
+                orientation = "Azimuth: " + decimalFormat.format(intent.getFloatExtra(OrientationPrecise.CLEF_ORIENTATION_0,-9));
+                orientation +=" Pitch: " + decimalFormat.format(intent.getFloatExtra(OrientationPrecise.CLEF_ORIENTATION_1, -9));
+                orientation +=" Roll: " + decimalFormat.format(intent.getFloatExtra(OrientationPrecise.CLEF_ORIENTATION_2,-9));
+                updateUI();
+            }
+        };
+
     }
 
     @Override
@@ -133,6 +170,31 @@ public class CameraActivity extends Activity implements LocationListener {
             }
         }
     }
+
+    private void updateUI(){
+       Log.d("Orientation",orientation);
+    }
+
+
+    protected void onPause() {
+        super.onPause();
+        mOrientationPrecise.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.registerReceiver(br_orientation, new IntentFilter(OrientationPrecise.MESSAGE_ORIENTATION));
+        mOrientationPrecise.start();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        unregisterReceiver(br_orientation);
+    }
+
+
 }
 
 
