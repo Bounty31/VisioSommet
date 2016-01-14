@@ -24,8 +24,8 @@
 
     <ImageView
         android:rotation="180"
-        android:layout_width="50px"
-        android:layout_height="50px"
+        android:layout_width="100px"
+        android:layout_height="100px"
         android:layout_x="0dp"
         android:layout_y="0dp"
         android:src="@drawable/marker"
