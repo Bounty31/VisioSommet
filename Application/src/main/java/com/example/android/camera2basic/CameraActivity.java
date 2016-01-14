@@ -36,6 +36,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsoluteLayout;
@@ -44,6 +45,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
@@ -64,6 +66,8 @@ public class CameraActivity extends Activity implements LocationListener {
     double pitch = 0;
     double roll = 0;
 
+    int widthDevice = 0;
+    int heightDevice = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +76,8 @@ public class CameraActivity extends Activity implements LocationListener {
         latitude = 47.642787;
         longitude = 6.8397398;
         locationToBear = new Location("LocationToBear");
-        locationToBear.setLongitude(6.859653);
-        locationToBear.setLatitude(47.619955);
+        locationToBear.setLongitude(6.944416);
+        locationToBear.setLatitude(47.642606);
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, Camera2BasicFragment.newInstance())
@@ -132,6 +136,18 @@ public class CameraActivity extends Activity implements LocationListener {
             }
         };
 
+        GestionnaireBaseSommets gbs = GestionnaireBaseSommets.getGestionnaireBaseSommets(getApplicationContext());
+        if (!GestionnaireBaseSommets.instanciee && !GestionnaireBaseSommets.initialisee)
+            gbs.insertinitialisation();
+
+        int nbsommets = gbs.combienDeSommets();
+        Toast.makeText(this, "" + nbsommets, Toast.LENGTH_LONG).show();
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        heightDevice = displaymetrics.heightPixels;
+        widthDevice= displaymetrics.widthPixels;
+
     }
 
     @Override
@@ -139,7 +155,7 @@ public class CameraActivity extends Activity implements LocationListener {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         angleBear = convertToRadianLocation(location.bearingTo(locationToBear));
-        Log.d("Location",""+angleBear);
+        Log.d("Location", "" + longitude+","+latitude);
     }
 
     @Override
@@ -191,44 +207,48 @@ public class CameraActivity extends Activity implements LocationListener {
     private void updateUI() {
         image = (ImageView) findViewById(R.id.imageView);
         double angleFocal = (Math.PI * 60 / 180);
-        int tailleEcran = 1280;
-        double pasParRadian = tailleEcran / angleFocal;
-        //Azimut = 0 quand le telephone pointe le nord, mais azimut = 0+ pi/2 quand le telephone fait FACE au nord
+        double pasParRadian = widthDevice/angleFocal;
+        //Azimut = 0 quand le telephone pointe le nord, mais azimut = 0- pi/2 quand le telephone fait FACE au nord
+        float posX = 0;
 
-        double nordTelephone = -Math.PI / 2 ;
-        nordTelephone-=angleBear;
-        int coef = 1;
+
         if (roll > 0) {
-            coef *= -1;
-            image.setY(720 - 50);
+            double nordTelephone = Math.PI / 2  ;
+            if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone - angleFocal / 2) {
+            }
+            posX = (float) (widthDevice / 2 + (azimut - nordTelephone) * pasParRadian) - 25;
+            image.setX(posX);
+
+            image.setY(heightDevice - 50);
             image.setRotation(0);
-            nordTelephone+=Math.PI;
-            if(nordTelephone>Math.PI)
-                nordTelephone-=Math.PI*2;
-            if(nordTelephone<-Math.PI)
-                nordTelephone+=Math.PI*2;
+            Log.d("Posx",posX+"");
+
         } else {
+            double nordTelephone = -Math.PI / 2;
+            if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone - angleFocal / 2) {
+
+            }
+            posX = (float) (widthDevice / 2 - (azimut - nordTelephone) * pasParRadian) - 25;
+
+            image.setX(posX);
+
             image.setY(0);
             image.setRotation(180);
         }
         //verification que l'objet est dans l'angle focal
-        if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone- angleFocal / 2) {
 
-        }
-        float posX = (float) (tailleEcran / 2 - coef * (azimut - nordTelephone) * pasParRadian)-25;
 
         //si le nord est à droite de l'écran
-        if(posX>tailleEcran) {
-            posX = tailleEcran-50;
+        if (image.getX() > widthDevice-image.getWidth()/2) {
+            image.setX(widthDevice-image.getWidth());
             image.setRotation(-90);
         }
         //si le nord est à gauche de l'écran
-        if(posX<0){
-            posX = 0;
+        if (image.getX() < 0-image.getWidth()/2) {
+            image.setX(0);
             image.setRotation(90);
         }
 
-        image.setX(posX);
         // Log.d("Pitch : ",""+roll);
         // set la position de la boussole indiquant le nord, en haut si le nord est en face, en bas si le nord est à l'opposé
         //Log.d("Orientation",orientation);
@@ -236,8 +256,8 @@ public class CameraActivity extends Activity implements LocationListener {
 
     }
 
-    public float convertToRadianLocation(float deg){
-        return -(float)(deg*Math.PI/180);
+    public float convertToRadianLocation(float deg) {
+        return -(float) (deg * Math.PI / 180);
     }
 
     protected void onPause() {
@@ -257,7 +277,22 @@ public class CameraActivity extends Activity implements LocationListener {
         super.onStop();
         unregisterReceiver(br_orientation);
     }
-
+    public float modulo(float nb, float modulo) {
+        float resultat = nb;
+        if (resultat > modulo) {
+            while (resultat > modulo) {
+                resultat -= modulo;
+            }
+            if (resultat < 0)
+                resultat += modulo;
+        }
+        else if(resultat<0){
+            while(resultat<0){
+                resultat+=modulo;
+            }
+        }
+        return resultat;
+    }
 
 }
 
