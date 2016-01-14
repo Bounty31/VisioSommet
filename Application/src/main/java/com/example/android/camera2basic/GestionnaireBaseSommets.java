@@ -106,17 +106,18 @@ public class GestionnaireBaseSommets extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(countQuery, null);
         if (cursor.moveToFirst()) {
             while (cursor.isAfterLast() == false) {
-                int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ID)));
+//                int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ID)));
                 float latitude = Float.parseFloat(cursor.getString(cursor.getColumnIndex(LATITUDE)));
                 float longitude = Float.parseFloat(cursor.getString(cursor.getColumnIndex(LONGITUDE)));
-                float altitude = Float.parseFloat(cursor.getString(cursor.getColumnIndex(ALTITUDE)));
+               // float altitude = Float.parseFloat(cursor.getString(cursor.getColumnIndex(ALTITUDE)));
                 String nom = cursor.getString(cursor.getColumnIndex(NOM));
 
-                Sommet newSommet = new Sommet(id,latitude,longitude,altitude,nom);
+                Sommet newSommet = new Sommet(0,latitude,longitude,0,nom);
                 resultat.add(newSommet);
                 cursor.moveToNext();
             }
         }
+        cursor.moveToFirst();
             return resultat;
         }
 

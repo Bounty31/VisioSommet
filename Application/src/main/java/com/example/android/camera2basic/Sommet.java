@@ -10,6 +10,8 @@ public class Sommet {
     private float longitude;
     private float altitude;
     private String nom;
+    public float angle;
+    public boolean angleSet = false;
 
     public Sommet(int id, float latitude, float longitude, float altitude, String nom) {
         this.id = id;
@@ -64,5 +66,10 @@ public class Sommet {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public void setAngle(float angle) {
+        this.angleSet = true;
+        this.angle = angle;
     }
 }

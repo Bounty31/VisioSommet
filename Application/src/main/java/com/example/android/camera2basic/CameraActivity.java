@@ -48,6 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class CameraActivity extends Activity implements LocationListener {
 
@@ -68,6 +69,9 @@ public class CameraActivity extends Activity implements LocationListener {
 
     int widthDevice = 0;
     int heightDevice = 0;
+
+    boolean gotLocation = false;
+    ArrayList<Sommet> listeSommet = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,15 +152,21 @@ public class CameraActivity extends Activity implements LocationListener {
         heightDevice = displaymetrics.heightPixels;
         widthDevice = displaymetrics.widthPixels;
 
-        gbs.getAll();
+       listeSommet = gbs.getAll();
 
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        gotLocation = true;
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        angleBear = convertToRadianLocation(location.bearingTo(locationToBear));
+
+        for (Sommet s : listeSommet) {
+            locationToBear.setLatitude(s.getLatitude());
+            locationToBear.setLongitude(s.getLongitude());
+            s.setAngle(convertToRadianLocation(location.bearingTo(locationToBear)));
+        }
         Log.d("Location", "" + longitude + "," + latitude);
     }
 
@@ -212,27 +222,31 @@ public class CameraActivity extends Activity implements LocationListener {
         double pasParRadian = widthDevice / angleFocal;
         //Azimut = 0 quand le telephone pointe le nord, mais azimut = 0- pi/2 quand le telephone fait FACE au nord
         float posX = 0;
-
+        float angleTo = 0;
+       if (gotLocation) {
+           angleTo = listeSommet.get(listeSommet.size() - 1).angle;
+           Log.d("Location",""+listeSommet.get(listeSommet.size() - 1).getNom());
+       }
 
         if (roll > 0) {
-            double nordTelephone = -Math.PI/2 + Math.PI - angleBear;
+            double nordTelephone = -Math.PI / 2 + Math.PI - angleTo;
             if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone - angleFocal / 2) {
             }
-            posX = (float) (widthDevice / 2 + (azimut - nordTelephone) * pasParRadian) - image.getWidth()/2;
-            if(angleBear!=0 && posX<0)
-                posX*=-1;
+            posX = (float) (widthDevice / 2 + (azimut - nordTelephone) * pasParRadian) - image.getWidth() / 2;
+            if (angleBear != 0 && posX < 0)
+                posX *= -1;
             image.setX(posX);
 
             image.setY(heightDevice - image.getHeight());
             image.setRotation(0);
-            Log.d("Posx", nordTelephone+"");
+            Log.d("Posx", nordTelephone + "");
 
         } else {
-            double nordTelephone = -Math.PI / 2 - angleBear;
+            double nordTelephone = -Math.PI / 2 - angleTo;
             if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone - angleFocal / 2) {
 
             }
-            posX = (float) (widthDevice / 2 - (azimut - nordTelephone) * pasParRadian) - image.getWidth()/2;
+            posX = (float) (widthDevice / 2 - (azimut - nordTelephone) * pasParRadian) - image.getWidth() / 2;
 
             image.setX(posX);
 
@@ -255,9 +269,8 @@ public class CameraActivity extends Activity implements LocationListener {
         float angleAiguille = 0;
         if (roll > 0) {
             angleAiguille = -(float) Math.toDegrees(Math.cos(image.getX() / (widthDevice - image.getWidth()) * Math.PI));
-            image.setRotation(angleAiguille+180);
-        }
-        else {
+            image.setRotation(angleAiguille + 180);
+        } else {
             angleAiguille = (float) Math.toDegrees(Math.cos(image.getX() / (widthDevice - image.getWidth()) * Math.PI));
             image.setRotation(angleAiguille);
         }
