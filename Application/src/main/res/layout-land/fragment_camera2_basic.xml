@@ -23,11 +23,12 @@
         android:layout_height="fill_parent" />
 
     <ImageView
-        android:layout_width="262dp"
-        android:layout_height="183dp"
-        android:layout_x="276dp"
-        android:layout_y="47dp"
-        android:src="@drawable/abc_btn_rating_star_on_mtrl_alpha"
+        android:rotation="180"
+        android:layout_width="50px"
+        android:layout_height="50px"
+        android:layout_x="0dp"
+        android:layout_y="0dp"
+        android:src="@drawable/marker"
         android:id="@+id/imageView"></ImageView>
 
     <!--<FrameLayout-->
