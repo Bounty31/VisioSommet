@@ -72,6 +72,7 @@ public class CameraActivity extends Activity implements LocationListener {
 
     boolean gotLocation = false;
     ArrayList<Sommet> listeSommet = null;
+    boolean locationSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,19 +142,19 @@ public class CameraActivity extends Activity implements LocationListener {
         };
 
         GestionnaireBaseSommets gbs = GestionnaireBaseSommets.getGestionnaireBaseSommets(getApplicationContext());
-        if (!GestionnaireBaseSommets.instanciee && !GestionnaireBaseSommets.initialisee)
+        if (gbs.combienDeSommets() <= 0)
             gbs.insertinitialisation();
 
         int nbsommets = gbs.combienDeSommets();
-        Toast.makeText(this, "" + nbsommets, Toast.LENGTH_LONG).show();
+        Toast.makeText(this,nbsommets+" sommet(s) chargé(s) ", Toast.LENGTH_LONG).show();
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         heightDevice = displaymetrics.heightPixels;
         widthDevice = displaymetrics.widthPixels;
 
-       listeSommet = gbs.getAll();
-
+        listeSommet = gbs.getAll();
+        Toast.makeText(this, "En attente d'une connexion satellite", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -165,9 +166,14 @@ public class CameraActivity extends Activity implements LocationListener {
         for (Sommet s : listeSommet) {
             locationToBear.setLatitude(s.getLatitude());
             locationToBear.setLongitude(s.getLongitude());
-            s.setAngle(convertToRadianLocation(location.bearingTo(locationToBear)));
+            s.setAngle((float) Math.toRadians((double) (location.bearingTo(locationToBear))));
+            s.distance = location.distanceTo(locationToBear) / 1000;
         }
         Log.d("Location", "" + longitude + "," + latitude);
+        if (!locationSet) {
+            Toast.makeText(this, "La localisation satellite a bien été effectué", Toast.LENGTH_SHORT).show();
+            locationSet = true;
+        }
     }
 
     @Override
@@ -217,37 +223,124 @@ public class CameraActivity extends Activity implements LocationListener {
     }
 
     private void updateUI() {
-        image = (ImageView) findViewById(R.id.imageView);
+        //updatecelle du nord
+        updateNord();
+        for (Sommet s : listeSommet) {
+            checkSommet(s, R.drawable.marker);
+        }
+
+    }
+
+    private void checkSommet(Sommet sommet, int id) {
+        SommetView mSommet;
+        if (sommet.onScreen) {
+            mSommet = sommet.image;
+            sommet.updateDistance();
+        } else {
+            mSommet = new SommetView(this, id, sommet.getNom(), sommet.distance);
+        }
+
         double angleFocal = (Math.PI * 60 / 180);
         double pasParRadian = widthDevice / angleFocal;
         //Azimut = 0 quand le telephone pointe le nord, mais azimut = 0- pi/2 quand le telephone fait FACE au nord
         float posX = 0;
-        float angleTo = 0;
-       if (gotLocation) {
-           angleTo = listeSommet.get(listeSommet.size() - 1).angle;
-           Log.d("Location",""+listeSommet.get(listeSommet.size() - 1).getNom());
-       }
 
+        //coupé en deux if pour quand le telephone est dans le mauvais sens
         if (roll > 0) {
-            double nordTelephone = -Math.PI / 2 + Math.PI - angleTo;
+            double nordTelephone = -Math.PI / 2 + Math.PI /*- sommet.angle*/;
+            if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone - angleFocal / 2) {
+            }
+            posX = (float) (widthDevice / 2 + (azimut - nordTelephone) * pasParRadian) - mSommet.getWidth() / 2;
+            mSommet.setX(posX);
+
+            mSommet.setY(heightDevice - mSommet.getHeight());
+            mSommet.setRotation(0);
+        }  /*
+        *
+        *
+        *ICI CODE POUR ORIENTATION NORMALE
+        *
+         */ else {
+            double nordTelephone = -sommet.angle - Math.PI / 2;
+            if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone - angleFocal / 2) {
+                //quand on est dans les bornes
+            }
+            posX = (float) (widthDevice / 2 - (azimut - nordTelephone) * pasParRadian) - mSommet.getWidth() / 2;
+            mSommet.setX(posX);
+
+            mSommet.setY(0 - (mSommet.getHeight() - mSommet.getHeight() * mSommet.getScaleY()) / 2);
+            // Log.d("scale",mSommet.getScaleY()+", "+mSommet.getHeight());
+            mSommet.setRotation(180);
+        }
+        //verification que l'objet est dans l'angle focal
+
+        //90*cos(x/(1920-25)*3.14)
+        //si le nord est à droite de l'écran
+//        if (mSommet.getX() > widthDevice - (mSommet.getWidth()-mSommet.getHeight())/2) {
+//            mSommet.setX(widthDevice - (mSommet.getWidth()-mSommet.getHeight())/2);
+//            //mSommet.setRotation(-90);
+//        }
+//        //si le nord est à gauche de l'écran
+//        if (mSommet.getX() < 0 - mSommet.getWidth() / 2) {
+//            mSommet.setX(0);
+//            //image.setRotation(90);
+//        }
+
+        //faire tourner l'aiguille
+        float angleAiguille = 0;
+        if (roll > 0) {
+            angleAiguille = -(float) Math.toDegrees(Math.cos(mSommet.getX() / (widthDevice - mSommet.getWidth()) * Math.PI));
+            mSommet.setRotation(angleAiguille + 180);
+        } else {
+            angleAiguille = (float) Math.toDegrees(Math.cos(mSommet.getX() / (widthDevice - mSommet.getWidth()) * Math.PI));
+            mSommet.setRotation(angleAiguille);
+        }
+        //Log.d("Angle", "" + angleAiguille);
+
+        // Log.d("Pitch : ",""+roll);
+        // set la position de la boussole indiquant le nord, en haut si le nord est en face, en bas si le nord est à l'opposé
+        //Log.d("Orientation",orientation);
+        // Log.d("Orientation",""+roll);
+
+        if (!sommet.onScreen) {
+            ((AbsoluteLayout) (findViewById(R.id.textureContainer))).addView(mSommet);
+            sommet.image = mSommet;
+            sommet.onScreen = true;
+        }
+    }
+
+
+    private void updateNord() {
+
+        image = (ImageView) findViewById(R.id.imageNord);
+        double angleFocal = (Math.PI * 60 / 180);
+        double pasParRadian = widthDevice / angleFocal;
+        //Azimut = 0 quand le telephone pointe le nord, mais azimut = 0- pi/2 quand le telephone fait FACE au nord
+        float posX = 0;
+
+        //coupé en deux if pour quand le telephone est dans le mauvais sens
+        if (roll > 0) {
+            double nordTelephone = -Math.PI / 2 + Math.PI;
             if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone - angleFocal / 2) {
             }
             posX = (float) (widthDevice / 2 + (azimut - nordTelephone) * pasParRadian) - image.getWidth() / 2;
-            if (angleBear != 0 && posX < 0)
-                posX *= -1;
             image.setX(posX);
 
             image.setY(heightDevice - image.getHeight());
             image.setRotation(0);
-            Log.d("Posx", nordTelephone + "");
-
-        } else {
-            double nordTelephone = -Math.PI / 2 - angleTo;
+        }
+        /*
+        *
+        *
+        *ICI CODE POUR ORIENTATION NORMALE
+        *
+         */
+        else {
+            double nordTelephone = -Math.PI / 2;
             if (azimut <= nordTelephone + angleFocal / 2 && azimut >= nordTelephone - angleFocal / 2) {
-
+                //quand on est dans les bornes
             }
             posX = (float) (widthDevice / 2 - (azimut - nordTelephone) * pasParRadian) - image.getWidth() / 2;
-
             image.setX(posX);
 
             image.setY(0);
@@ -255,17 +348,19 @@ public class CameraActivity extends Activity implements LocationListener {
         }
         //verification que l'objet est dans l'angle focal
 
-//90*cos(x/(1920-25)*3.14)
+        //90*cos(x/(1920-25)*3.14)
         //si le nord est à droite de l'écran
         if (image.getX() > widthDevice - image.getWidth() / 2) {
             image.setX(widthDevice - image.getWidth());
             //image.setRotation(-90);
         }
         //si le nord est à gauche de l'écran
-        else if (image.getX() < 0 - image.getWidth() / 2) {
+        if (image.getX() < 0 - image.getWidth() / 2) {
             image.setX(0);
             //image.setRotation(90);
         }
+
+        //faire tourner l'aiguille
         float angleAiguille = 0;
         if (roll > 0) {
             angleAiguille = -(float) Math.toDegrees(Math.cos(image.getX() / (widthDevice - image.getWidth()) * Math.PI));
@@ -274,13 +369,12 @@ public class CameraActivity extends Activity implements LocationListener {
             angleAiguille = (float) Math.toDegrees(Math.cos(image.getX() / (widthDevice - image.getWidth()) * Math.PI));
             image.setRotation(angleAiguille);
         }
-        Log.d("Angle", "" + angleAiguille);
+        //Log.d("Angle", "" + angleAiguille);
 
         // Log.d("Pitch : ",""+roll);
         // set la position de la boussole indiquant le nord, en haut si le nord est en face, en bas si le nord est à l'opposé
         //Log.d("Orientation",orientation);
         // Log.d("Orientation",""+roll);
-
     }
 
     public float convertToRadianLocation(float deg) {

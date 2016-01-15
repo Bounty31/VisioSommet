@@ -15,7 +15,8 @@
 -->
 <AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:id="@+id/textureContainer">
 
     <com.example.android.camera2basic.AutoFitTextureView
         android:id="@+id/texture"
@@ -28,8 +29,8 @@
         android:layout_height="100px"
         android:layout_x="0dp"
         android:layout_y="0dp"
-        android:src="@drawable/marker"
-        android:id="@+id/imageView"></ImageView>
+        android:src="@drawable/nord"
+        android:id="@+id/imageNord"></ImageView>
 
     <!--<FrameLayout-->
         <!--android:id="@+id/control"-->

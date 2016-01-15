@@ -1,5 +1,7 @@
 package com.example.android.camera2basic;
 
+import android.widget.ImageView;
+
 /**
  * Created by ozeroual on 14/01/16.
  */
@@ -12,6 +14,9 @@ public class Sommet {
     private String nom;
     public float angle;
     public boolean angleSet = false;
+    public boolean onScreen = false;
+    public SommetView image;
+    public float distance = 0 ;
 
     public Sommet(int id, float latitude, float longitude, float altitude, String nom) {
         this.id = id;
@@ -71,5 +76,8 @@ public class Sommet {
     public void setAngle(float angle) {
         this.angleSet = true;
         this.angle = angle;
+    }
+    public void updateDistance(){
+        image.updateDistance(distance);
     }
 }
